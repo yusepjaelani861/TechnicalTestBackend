@@ -15,6 +15,15 @@ const listOrder = asyncHandler(async (req: Request, res: Response, next: NextFun
     const orders = await prisma.order.findMany({
         skip: (page - 1) * limit,
         take: limit,
+        include: {
+            customer: true,
+            customer_address: true,
+            order_details: {
+                include: {
+                    product: true,
+                }
+            }
+        }
     })
 
     const total = await prisma.order.count()
@@ -86,6 +95,7 @@ const validation = (method: string) => {
         case 'createOrder':
             return [
                 body('customer_id').notEmpty().withMessage('Customer id is required'),
+                body('customer_address_id').notEmpty().withMessage('Customer address id is required'),
                 body('products').notEmpty().withMessage('Products is required').isArray().withMessage('Products must be array').custom((value: any) => {
                     if (value.length > 0) {
                         for (let i = 0; i < value.length; i++) {

@@ -1,7 +1,8 @@
 # Technical Test Backend Developer DimyTech
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-This is useCase from 
+## Documentation API using Postman
+[https://documenter.getpostman.com/view/19496704/2s93CRLsFn](https://documenter.getpostman.com/view/19496704/2s93CRLsFn)
 
 ## Server Requirement
 - Node v18.10.0+
@@ -35,6 +36,7 @@ Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-
 ```bash
 npm install
 npm run migration
+npm run seed
 npm run build
 npm run start
 ```

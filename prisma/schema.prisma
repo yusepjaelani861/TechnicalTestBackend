@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model customer {
+  id                 Int                @id @default(autoincrement())
+  customer_name      String             @db.VarChar(50)
+  customer_addresses customer_address[]
+  order              order[]
+}
+
+model customer_address {
+  id          Int      @id @default(autoincrement())
+  customer_id Int
+  address     String   @db.VarChar(50)
+  customer    customer @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  order       order[]
+}
+
+model product {
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(50)
+  price        Int
+  order_detail order_detail[]
+}
+
+model payment_method {
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(50)
+  is_active Boolean @default(false)
+}
+
+model order {
+  id                  Int              @id @default(autoincrement())
+  customer_id         Int
+  customer_address_id Int
+  customer            customer         @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  order_details       order_detail[]
+  customer_address    customer_address @relation(fields: [customer_address_id], references: [id], onDelete: Cascade)
+}
+
+model order_detail {
+  id          Int     @id @default(autoincrement())
+  order_id    Int
+  product_id  Int
+  order       order   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product     product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+}
